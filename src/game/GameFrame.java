@@ -10,6 +10,7 @@ public class GameFrame extends JFrame implements ActionListener {
 
     Element[] ArrayElements = new Element[16]; //элементы
     GameMath gameMath = new GameMath(); //математика игры, для получения последовательности элементов имеющее решение
+    JLabel winLabel = new JLabel("YOU WIN!!!", JLabel.CENTER);
 
 
     //Конструктор класса
@@ -20,6 +21,12 @@ public class GameFrame extends JFrame implements ActionListener {
         this.setSize(616, 639); //размер окна
         this.setVisible(true); //досутпность окна
         this.setLocationRelativeTo(null); //по центру экрна
+        //В случае победы
+        winLabel.setBounds(150, 200, 300, 100);
+        winLabel.setFont(new Font("Comic Sans", Font.BOLD, 50)); //шрифт, жирный, размер
+        winLabel.setForeground(Color.GREEN); //цвет элемента
+        winLabel.setVisible(false);
+        this.add(winLabel);
 
         //Получить случайную последовательность от 1 до 15 неповторяющихся элементов, путем перестановки, имеющую решение
         gameMath.GetRandomElements();
@@ -27,8 +34,8 @@ public class GameFrame extends JFrame implements ActionListener {
         //проходим по всем позициям и рассталвяем их номера
         int i = 0;
         for (Element.Position position : Element.Position.values()) {
-            ArrayElements[i] = new Element(position);
-            ArrayElements[i].SetNumber(gameMath.ArrayNumber[i]);
+            ArrayElements[i] = new Element(position); //раставляем элементы
+            ArrayElements[i].SetNumber(gameMath.ArrayNumber[i]); //присваиваем номера
             //Добавляем и прослушиваем
             this.add(ArrayElements[i]); //добавление элемента в окно
             ArrayElements[i].addActionListener(this); //прослушиватель действий на каждый элемент(кнопку)
@@ -36,6 +43,14 @@ public class GameFrame extends JFrame implements ActionListener {
             i++;
         }
 
+    }
+
+    //Проверка выигрыша
+    boolean CheckWin() {
+        for (int i = 0; i < 16; i++) {
+            if (ArrayElements[i].GetNumber() != (i + 1)) return false;
+        }
+        return true;
     }
 
 
@@ -425,6 +440,12 @@ public class GameFrame extends JFrame implements ActionListener {
                 ArrayElements[15].setVisible(false);
                 ArrayElements[11].setVisible(true);
             }
+        }
+
+        //Проверка выигрыша
+        if (CheckWin()) {
+            for (int i = 0; i < 16; i++) ArrayElements[i].setEnabled(false);
+            winLabel.setVisible(true);
         }
     }
 }
