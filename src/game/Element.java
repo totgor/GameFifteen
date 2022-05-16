@@ -1,14 +1,33 @@
 package game;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Element extends JButton {
-    enum Position {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN}
+    enum Position {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, ELEVEN, TWELVE, THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN};
 
-    ;
-    int number; //номер элемента
-    int positionX; //ряд
-    int positionY; //столбец
+    private int number; //номер элемента
+    private int positionX; //ряд
+    private int positionY; //столбец
+
+    Element(Position position) {
+        CalcPosition(position);
+        //Рисуем элемент
+        this.setBounds(positionX, positionY, 150, 150);
+        this.setFont(new Font("Comic Sans", Font.BOLD, 35)); //шрифт, жирный, размер
+        this.setBackground(Color.lightGray); //цвет элемента
+        this.setBorder(BorderFactory.createEtchedBorder()); //вид границ
+    }
+
+    public int GetNumber () {
+        return number;
+    }
+
+    public void SetNumber (int number) {
+        this.number = number;
+        this.setText(String.valueOf(number)); //написать число на элементе
+    }
+
 
     void CalcPosition(Position position) {
         switch (position) {
@@ -79,8 +98,5 @@ public class Element extends JButton {
         }
     }
 
-    Element(Position position) {
-        CalcPosition(position);
-        this.setBounds(positionX, positionY, 150, 150);
-    }
+
 }
